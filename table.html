@@ -5,6 +5,8 @@
   <title>Tables Page</title>
 
   <!-- Latest compiled and minified CSS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
 </head>
@@ -24,6 +26,29 @@
       </div>
 
     </div>
+    
+    <div class="col-lg-12">
+      <div class="panel panel-default">
+       <div class="panel-heading">
+        <h4 class="tableDiv">Current Reservations</h4>
+    </div>    
+
+        <div class="well" id="tableWell -01"></div>
+          <h2><span class="label label-primary">1</span></h2>
+        </div>
+      </div>
+
+    <div class="col-lg-12">
+      <div class="panel panel-default">
+       <div class="panel-heading">
+        <h4 class="waitDiv">Current Wait List</h4>
+    </div>    
+
+        <div class="well" id="tableWell -01"></div>
+          <h2><span class="label label-primary">1</span></h2>
+        </div>
+      </div>
+     </div> 
 
     <footer class="footer">
       <div class="container">
@@ -32,6 +57,79 @@
     </footer>
 
   </div>
+
+  <script type="text/javascript">
+
+    function tableQuery(){
+    
+    var currentURL = window.location.origin;
+
+    $.ajax({url: currentURL + "/api/table", method: "GET"})
+    .done(function(tableData) {
+
+      console.log("---------------------------");
+      console.log("URL: " + currentURL + "/api/table");
+      console.log("---------------------------");
+
+      console.log(tableData);
+      console.log("---------------------------")
+
+      for (var i = 0; i < tableData.length; i++) {
+        var tableDiv = $("<div>");
+        tableDiv.addClass("well");
+        tableDiv.attr("id", "tableWell-" + i+1)
+        $("#tableDiv").append(tableDiv);
+
+        var tableNumber = i + 1;
+
+        $("#tableWell-" + i + 1).append('<h2><span class="label label-primary">' + tableNumber + "</span> | " + tableData[i].customerID + "</h2>");
+         }
+      });
+    }
+
+    function waitListQuery(){
+    
+    var currentURL = window.location.origin;
+
+    $.ajax({url: currentURL + "/api/waitlist", method: "GET"})
+    .done(function(waitListData) {
+
+      console.log("---------------------------");
+      console.log("URL: " + currentURL + "/api/waitlist");
+      console.log("---------------------------");
+
+      console.log(waitListData);
+      console.log("---------------------------")
+
+      for (var i = 0; i < waitListData.length; i++) {
+        var waitDiv = $("<div>");
+        waitDiv.addClass("well");
+        waitDiv.attr("id", "tableWell-" + i+1)
+        $("#waitDiv").append(waitDiv);
+
+        var waitNumber = i + 1;
+
+        $("#tableWell-" + i + 1).append('<h2><span class="label label-primary">' + waitNumber + "</span> | " + waitListData[i].customerID + "</h2>");
+         }
+      });
+    }
+
+    function clearTable() {
+
+       var currentURL = window.location.origin;
+        $.ajax({url: currentURL + "/api/clearTable", method: "POST"})
+      }
+        $("#clear").on("click", function() {
+          alert("Clearing Tables");
+          clearTable();
+          location.reload();
+        })
+
+    tableQuery();
+    waitListQuery();
+
+
+  </script>
 
 
 </body>

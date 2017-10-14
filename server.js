@@ -3,7 +3,7 @@ var path = require("path");
 var bodyParser = require("body-parser");
 
 var app = express();
-var PORT = process.env.PORT || 3000;
+var PORT = 3000;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -22,21 +22,21 @@ app.get("/reservation", function(req, res) {
 }); 
 
 
-app.get('/api/tables', function (req, res) {
+app.get('/api/table', function (req, res) {
   res.json(tables);
 });
 
-app.post('/api/reserve', function (req, res) {
+app.post('/api/reservations', function (req, res) {
 	console.log('reservation submitted');
 	console.log(req.body);
 
   var newReservation = req.body;
 
-  tables.push(newReservation);
+  table.push(newReservation);
 
   
   var isBooked;
-  if(tables.length <= 5){
+  if(table.length <= 5){
     isBooked = true;
   }
   else{
